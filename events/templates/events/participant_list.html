@@ -1,0 +1,29 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<h1 class="text-2xl font-bold mb-6">All Participants</h1>
+
+<ul class="space-y-4">
+    {% for participant in participants %}
+        <li class="flex justify-between items-center bg-white p-4 rounded-lg shadow-md">
+            <div>
+                <h2 class="text-lg font-semibold">{{ participant.name }}</h2>
+                <p class="text-gray-600">Email: {{ participant.email }}</p>
+            </div>
+            <div class="flex gap-2">
+                <a href="{% url 'update_participant' participant.id %}" class="bg-yellow-400 hover:bg-yellow-500 text-white py-1 px-3 rounded-md shadow">
+                    Edit
+                </a>
+                <form method="post" action="{% url 'delete_participant' participant.id %}" onsubmit="return confirm('Are you sure you want to delete this participant?');">
+                    {% csrf_token %}
+                    <button type="submit" class="bg-red-500 hover:bg-red-600 text-white py-1 px-3 rounded-md shadow">
+                        Delete
+                    </button>
+                </form>
+            </div>
+        </li>
+    {% empty %}
+        <li class="text-gray-500">No participants found.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

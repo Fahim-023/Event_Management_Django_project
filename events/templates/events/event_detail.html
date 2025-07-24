@@ -1,0 +1,33 @@
+{% extends 'events/base.html' %}
+{% block title %}Event Details{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold">{{ event.title }}</h1>
+<p>Date: {{ event.date }}</p>
+<p>Category: {{ event.category.name }}</p>
+<h2 class="text-xl font-semibold mt-4">Participants:</h2>
+<ul class="list-disc ml-6">
+    {% for participant in event.participants.all %}
+        <li>{{ participant.name }} ({{ participant.email }})</li>
+    {% endfor %}
+</ul>
+<a href="{% url 'update_event' event.id %}" class="text-blue-600">Edit Event</a> |
+<a href="{% url 'delete_event' event.id %}" class="text-red-600">Delete Event</a>
+{% endblock %}
+
+<!-- dashboard.html -->
+{% extends 'events/base.html' %}
+{% block title %}Dashboard{% endblock %}
+{% block content %}
+<h1 class="text-2xl font-bold mb-4">Organizer Dashboard</h1>
+<a href="{% url 'create_event' %}" class="bg-green-500 text-white px-4 py-2">Create Event</a>
+<a href="{% url 'create_category' %}" class="ml-2 bg-yellow-500 text-white px-4 py-2">Create Category</a>
+<a href="{% url 'create_participant' %}" class="ml-2 bg-purple-500 text-white px-4 py-2">Create Participant</a>
+<h2 class="text-xl font-semibold mt-6">All Events</h2>
+<ul class="space-y-2 mt-2">
+    {% for event in events %}
+        <li class="bg-white p-4 rounded shadow">
+            {{ event.title }} ({{ event.date }}) - <a href="{% url 'update_event' event.id %}" class="text-blue-600">Edit</a> | <a href="{% url 'delete_event' event.id %}" class="text-red-600">Delete</a>
+        </li>
+    {% endfor %}
+</ul>
+{% endblock %}

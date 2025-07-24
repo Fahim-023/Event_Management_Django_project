@@ -1,0 +1,9 @@
+{% extends 'events/base.html' %}
+{% block title %}Delete Category{% endblock %}
+{% block content %}
+<h1 class="text-xl">Are you sure you want to delete category: {{ category.name }}?</h1>
+<form method="POST">
+    {% csrf_token %}
+    <button type="submit" class="bg-red-500 text-white px-4 py-2">Confirm Delete</button>
+</form>
+{% endblock %}

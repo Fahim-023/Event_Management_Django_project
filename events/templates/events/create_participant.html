@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Participant Registration</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+
+  <div class="w-full max-w-xl bg-white shadow-lg rounded-lg p-8 mt-10">
+    <form method="POST">
+      {% csrf_token %}
+
+      <!-- Render Django form fields (like name, email) -->
+      {{ form.as_p }}
+
+      <!-- Event selection dropdown -->
+      <div class="mb-4">
+        <label for="event_id" class="block font-semibold mb-2">Select Event:</label>
+        <select name="event_id" id="event_id"
+          class="w-full border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring focus:border-blue-400">
+          {% for event in events %}
+            <option value="{{ event.id }}">{{ event.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+
+      <!-- Submit button -->
+      <button type="submit"
+        class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-md shadow">
+        Register
+      </button>
+    </form>
+  </div>
+
+</body>
+</html>
