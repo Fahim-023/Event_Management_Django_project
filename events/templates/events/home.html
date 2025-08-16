@@ -1,44 +1,58 @@
-{% extends "events/base.html" %}
-
+{% extends 'events/base.html' %}
 {% load static %}
 
 {% block content %}
-<div class="container mx-auto p-4">
-    <h1 class="text-2xl font-bold mb-4">All Events</h1>
+<div class="container mt-4">
 
-    <!-- Search and Filter Form -->
-    <form method="get" class="flex gap-4 mb-6">
-        <input type="text" name="q" placeholder="Search by name or location"
-            value="{{ search_query }}" class="border p-2 rounded w-1/2">
-        
-        <select name="category" class="border p-2 rounded">
-            <option value="">All Categories</option>
-            {% for category in categories %}
-                <option value="{{ category.id }}" {% if selected_category == category.id|stringformat:"s" %}selected{% endif %}>
+    <!-- 🔎 Search Form -->
+    <form method="get" class="row mb-4">
+        <div class="col-md-4">
+            <select name="category" class="form-select">
+                <option value="">All Categories</option>
+                {% for category in categories %}
+                <option value="{{ category.id }}" {% if request.GET.category == category.id|stringformat:"s" %}selected{% endif %}>
                     {{ category.name }}
                 </option>
-            {% endfor %}
-        </select>
-        
-        <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded">Filter</button>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-4">
+            <input type="text" name="q" class="form-control" placeholder="Search event name..."
+                   value="{{ request.GET.q }}">
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary w-100">Search</button>
+        </div>
     </form>
 
-    <!-- Event List -->
-    {% if events %}
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {% for event in events %}
-                <div class="border rounded-lg p-4 shadow">
-                    <h2 class="text-xl font-semibold">{{ event.name }}</h2>
-                    <p><strong>Date:</strong> {{ event.date }}</p>
-                    <p><strong>Time:</strong> {{ event.time }}</p>
-                    <p><strong>Location:</strong> {{ event.location }}</p>
-                    <p><strong>Category:</strong> {{ event.category.name }}</p>
-                    <p><strong>Participants:</strong> {{ event.participant_count }}</p>
+    <!-- 🎉 Event Cards -->
+    <div class="row">
+        {% for event in events %}
+        <div class="col-md-4 mb-4">
+            <div class="card shadow-sm h-100">
+                <!-- Event Image -->
+                {% if event.image %}
+                    <img src="{{ event.image.url }}" class="card-img-top" alt="{{ event.name }}" style="height:200px; object-fit:cover;">
+                {% else %}
+                    <img src="{% static 'events/default_event.jpg' %}" class="card-img-top" alt="Default event image" style="height:200px; object-fit:cover;">
+                {% endif %}
+
+                <div class="card-body">
+                    <h5 class="card-title">{{ event.name }}</h5>
+                    <p class="card-text text-muted">
+                        {{ event.category.name }} | {{ event.date }}
+                    </p>
+                    <p class="card-text">
+                        {{ event.description|truncatewords:20 }}
+                    </p>
+                    <a href="{% url 'event_detail' event.id %}" class="btn btn-outline-primary btn-sm"><button class="px-2 py-1 bg-green-500 text-white rounded">View Details</button></a>
                 </div>
-            {% endfor %}
+            </div>
         </div>
-    {% else %}
-        <p class="text-gray-500">No events found.</p>
-    {% endif %}
+        {% empty %}
+        <p class="text-center text-muted">No events found.</p>
+        {% endfor %}
+    </div>
+
 </div>
 {% endblock %}

@@ -1,5 +1,5 @@
 from django import forms
-from events.models import Event, Category, Participant
+from events.models import Event, Category
 
 form_input_class = "w-full px-4 py-2 border-2 border border-gray-300 rounded-lg  shadow-sm focus:border-rose-500 focus:ring-rose-500"
 form_textarea_class = "w-full px-4 py-2  border-2 border  border-gray-300 rounded-lg shadow-sm focus:border-rose-500 focus:ring-rose-500"
@@ -18,7 +18,7 @@ class CategoryForm(forms.ModelForm):
 class EventForm(forms.ModelForm):  
     class Meta:
         model = Event
-        fields = ['name', 'category', 'date', 'time', 'location']  
+        fields = ['name', 'category', 'date', 'time', 'location','image']  
         widgets = {
             'name': forms.TextInput(attrs={'class': form_input_class}),
             'category': forms.Select(attrs={'class': form_select_class}),
@@ -27,13 +27,4 @@ class EventForm(forms.ModelForm):
             'location': forms.TextInput(attrs={'class': form_input_class}),
         }
 
-
-class ParticipantForm(forms.ModelForm):
-    class Meta:
-        model = Participant
-        fields = ['name', 'email']
-        widgets = {
-            'name': forms.TextInput(attrs={'class': form_input_class}),
-            'email': forms.EmailInput(attrs={'class': form_input_class}),
-        }
 

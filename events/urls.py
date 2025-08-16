@@ -1,37 +1,43 @@
-from django.urls import path
+# events/urls.py
+from django.urls import path, include
 from . import views
 
 urlpatterns = [
+    # Front page
+    path('', views.frontpage, name='frontpage'),
+
     # Home page with search + category filter
-    path('', views.home, name='home'),
+    path('event/home/', views.home, name='home'),
 
     # Event detail view
     path('event/<int:pk>/', views.event_detail, name='event_detail'),
-
-    # Organizer dashboard
-    path('dashboard/', views.dashboard, name='dashboard'),
 
     # Event CRUD
     path('event/create/', views.create_event, name='create_event'),
     path('event/<int:pk>/edit/', views.update_event, name='update_event'),
     path('event/<int:pk>/delete/', views.delete_event, name='delete_event'),
 
-    # Category create
+    # Category CRUD
     path('category/create/', views.create_category, name='create_category'),
     path('categories/', views.category_list, name='category_list'),
-    # Category
     path('category/<int:pk>/edit/', views.update_category, name='update_category'),
     path('category/<int:pk>/delete/', views.delete_category, name='delete_category'),
 
-    # Participant create
-    path('participant/create/', views.create_participant, name='create_participant'),
-    path('participants/', views.participant_list, name='participant_list'),
+    # User app
+    path('users/', include('users.urls')),
 
-    # Delete routes
-    path('category/<int:pk>/delete/', views.delete_category, name='delete_category'),
-    path('participant/<int:pk>/delete/', views.delete_participant, name='delete_participant'),
-    # Update routes
-    path('category/<int:pk>/edit/', views.update_category, name='update_category'),
-    path('participant/<int:pk>/edit/', views.update_participant, name='update_participant'),
+    # Dashboards
+    path('dashboard/', views.dashboard, name='dashboard'),
+    path('dashboard/admin/', views.admin_dashboard, name='admin-dashboard'),
+    path('dashboard/organizer/', views.organizer_dashboard, name='organizer-dashboard'),
+    path('dashboard/participant/', views.participant_dashboard, name='participant-dashboard'),
 
+    # Roles / Groups
+    path('create-group/', views.create_group, name='create-group'),
+    path('groups/', views.group_list, name='group-list'),
+    path('assign-role/<int:user_id>/', views.assign_role, name='assign-role'),
+    path('no-permission/', views.no_permission, name='no-permission'),
+
+    # RSVP
+    path("event/<int:event_id>/rsvp/", views.rsvp_event, name="rsvp_event"),
 ]

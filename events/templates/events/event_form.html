@@ -1,12 +1,16 @@
 {% extends 'events/base.html' %}
-{% block title %}Event Form{% endblock %}
 {% block content %}
-<h1 class="text-2xl font-bold mb-4">Event Form</h1>
+<h1>{{ form.instance.pk|yesno:"Edit Event,Create Event" }}</h1>
 
-    <form method="POST" >
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="bg-blue-500 text-white px-4 py-2">Save</button>
+<form method="post" enctype="multipart/form-data">  <!-- ✅ enctype -->
+  {% csrf_token %}
+  {{ form.as_p }}
+
+  {% if form.instance.pk and form.instance.image %}
+    <p>Current Image:</p>
+    <img src="{{ form.instance.image.url }}" alt="{{ form.instance.name }}" style="max-width: 300px;">
+  {% endif %}
+
+  <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Save</button>
 </form>
-
 {% endblock %}

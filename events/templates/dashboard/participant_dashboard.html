@@ -1,0 +1,24 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<h2>{{ user.username }}'s Dashboard</h2>
+
+<h3>My RSVPed Events</h3>
+<ul>
+    {% for event in rsvped_events %}
+        <li>
+            <strong>{{ event.name }}</strong> - {{ event.date }} {{ event.time }}
+            <br>
+            Location: {{ event.location }}
+            <br>
+            Category: {{ event.category.name }}
+            <form method="post" action="{% url 'cancel_rsvp' event.id %}">
+                {% csrf_token %}
+                <button type="submit">Cancel RSVP</button>
+            </form>
+        </li>
+    {% empty %}
+        <li>You haven't RSVPed to any events.</li>
+    {% endfor %}
+</ul>
+{% endblock %}

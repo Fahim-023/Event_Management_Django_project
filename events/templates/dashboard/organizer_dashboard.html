@@ -1,0 +1,26 @@
+{% extends 'events/base.html' %}
+
+{% block content %}
+<h2>Organizer Dashboard</h2>
+
+<h3>Events I Created</h3>
+<a href="{% url 'create_event' %}">Create New Event</a>
+<ul>
+    {% for event in created_events %}
+        <li>
+            <strong>{{ event.name }}</strong> - {{ event.date }} {{ event.time }}
+            <br>
+            Location: {{ event.location }}
+            <br>
+            Category: {{ event.category.name }}
+            <br>
+            Participants: {{ event.participants.count }}
+            <br>
+            <a href="{% url 'update_event' event.id %}">Edit</a> |
+            <a href="{% url 'delete_event' event.id %}">Delete</a>
+        </li>
+    {% empty %}
+        <li>No events created yet.</li>
+    {% endfor %}
+</ul>
+{% endblock %}
