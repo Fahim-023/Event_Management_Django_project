@@ -5,16 +5,16 @@
 
 <h3>My RSVPed Events</h3>
 <ul>
-    {% for event in rsvped_events %}
+    {% for event in my_rsvp_events %}
         <li>
             <strong>{{ event.name }}</strong> - {{ event.date }} {{ event.time }}
             <br>
             Location: {{ event.location }}
             <br>
             Category: {{ event.category.name }}
-            <form method="post" action="{% url 'cancel_rsvp' event.id %}">
+            <form method="post" action="{% url 'event_detail' event.id %}">
                 {% csrf_token %}
-                <button type="submit">Cancel RSVP</button>
+                <button class="px-2 py-1 bg-red-400 text-white rounded "type="submit">Cancel RSVP</button>
             </form>
         </li>
     {% empty %}
